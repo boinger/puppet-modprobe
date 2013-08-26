@@ -1,6 +1,7 @@
-define modprobe::kern_module(
+define modprobe::load(
   $ensure = 'present'
 ){
+
   file_line{"module_${name}":
     line => $::operatingsystem ? {
       debian => $name,
@@ -14,6 +15,7 @@ define modprobe::kern_module(
     },
     ensure => $ensure,
   }
+  
   case $ensure {
     present: {
       exec{"/sbin/modprobe ${name}":
